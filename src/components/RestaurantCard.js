@@ -9,48 +9,32 @@ const RestaurantCard = (props) => {
       resData?.info;
     // console.log(props);
     return (
-      // <div className="res-card" style={{ backgroundColor: "#e8e8e8" }}>
-      //   <img
-      //     className="res-card-img"
-      //     alt="food-log"
-      //     src={
-      //       CDN_URL +
-      //       cloudinaryImageId
-      //     }
-      //   />
-      //   <h3>{name}</h3>
-      //   <h4>{cuisines.join(", ")}</h4>
-      //   <h4>{costForTwo}</h4>
-      //   <h4>{avgRating}</h4>
-      //   <h4>{sla.deliveryTime} minutes</h4>
-      // </div>
-
-<div className="card mb-5 w-60">
-    <div className="restaurant-card">
-        <div className="image-container">
-            <img src={CDN_URL + cloudinaryImageId} />
-            <div className="discount-badge">{aggregatedDiscountInfoV3 ? aggregatedDiscountInfoV3.header + ' ' +  aggregatedDiscountInfoV3.subHeader : ''}</div>
-        </div>
-        <h3 className="restaurant-name text-wrap">{name}</h3>
-        <div className="info-container">
-            <div className="info-row">
-                <div className="rating">
-                    <span className="rating-star"><i className="bi bi-star-fill star"></i></span>
-                    <span className="review-count">{avgRating}</span>
-                </div>
-                <div className="delivery-info">
-                    <i className="bi bi-dot"></i> {sla?.slaString}
-                </div>
+      <div className="flex justify-center mb-5 w-72">
+        <div className="restaurant-card bg-white shadow-lg rounded-lg overflow-hidden">
+          <div className="image-container relative">
+            <img className="w-full h-48 object-cover" src={CDN_URL + cloudinaryImageId} />
+            <div className="discount-badge absolute bottom-2 left-2 text-white text-xs px-2 py-1 rounded">
+              {aggregatedDiscountInfoV3 ? aggregatedDiscountInfoV3.header + ' ' + aggregatedDiscountInfoV3.subHeader : ''}
             </div>
-            <div className="flex flex-wrap">
-            <div className="">{cuisines.join(", ")}</div>
-
+          </div>
+          <h3 className="restaurant-name text-wrap text-lg font-semibold p-2 truncate">{name}</h3>
+          <div className="info-container p-2">
+            <div className="info-row flex justify-between items-center mb-2">
+              <div className="rating flex items-center">
+                <span className="rating-star text-yellow-500"><i className="bi bi-star-fill star"></i></span>
+                <span className="review-count ml-1 text-sm">{avgRating}</span>
+              </div>
+              <div className="delivery-info text-sm text-gray-500">
+                <i className="bi bi-dot"></i> {sla?.slaString}
+              </div>
             </div>
-            <p>{locality}</p>
+            <div className="flex flex-wrap text-sm text-gray-700 mb-2">
+              <div className="truncate">{cuisines.join(", ")}</div>
+            </div>
+            <p className="text-sm text-gray-500">{locality}</p>
+          </div>
         </div>
-    </div>
-</div>
-
+      </div>
     );
   };
 

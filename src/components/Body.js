@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./shimmer";
 // import resList from "../utilities/mockData";
@@ -5,18 +6,25 @@ import { useState, useEffect } from "react";
 
 const Body = () => {
   // local state variable - super powerful variable
+  //  always create usestate variable inside a functional component and keep it on the top. dont use it inside function, IF, loops
 
   // whenever state variable update react triggers a reconciliation cycle(rerender component)
   const [listOfAllRestaurants, setListOfRestaurant] = useState([]);
   const [filteredRestaurant, setfilteredRestaurant] = useState([]);
   const [searchText, setSearchText] = useState("");
-  // as soon as the body renders it will eventually call the useEffect hook
+  let copyOfRestaurants = [];
+
+  /* useEffect() */
+  // as soon as the body(component) renders it will eventually call the useEffect hook it has two arguments first is arrow function second is dependecy array(its not mandatory)
+  // if no dependency array is given then useEffect  is called on every render
+  // if dependency array is empty is provided then useEffect is called on initial render(just once);
+  // if dependency array is given as "listOfAllRestaurants" then it is being called everytime when listOfAllRestaurants is updated.
   useEffect(() => {
     fetchData();
   }, []);
 
-  console.log('BODY rendered!');
-  
+  console.log("BODY rendered!");
+
   const fetchData = async () => {
     const data = await fetch(
       "https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.45970&lng=77.02820&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
@@ -31,6 +39,7 @@ const Body = () => {
 
     setListOfRestaurant(restaurantListFromApi);
     setfilteredRestaurant(restaurantListFromApi);
+    copyOfRestaurants = restaurantListFromApi;
   };
 
   return listOfAllRestaurants.length === 0 ? (
@@ -43,28 +52,28 @@ const Body = () => {
     <div className="body">
       <div className="grid grid-cols-3 py-5">
         <div>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            const filteredList = listOfAllRestaurants.filter(
-              (res) => res?.info?.avgRating >= 4
-            );
-            console.log(filteredList.length);
+          <button
+            className="filter-btn"
+            onClick={() => {
+              const filteredList = listOfAllRestaurants.filter(
+                (res) => res?.info?.avgRating >= 4
+              );
+              console.log(filteredList.length);
 
-            setListOfRestaurant(filteredList);
-          }}
-        >
-          Top Rated Restaurant
-        </button>
-        <button
-          className="filter-btn"
-          onClick={() => {
-            setListOfRestaurant(copyOfRestaurants);
-          }}
-        >
-          {" "}
-          Get All
-        </button>
+              setListOfRestaurant(filteredList);
+            }}
+          >
+            Top Rated Restaurant
+          </button>
+          <button
+            className="filter-btn"
+            onClick={() => {
+              setListOfRestaurant(copyOfRestaurants);
+            }}
+          >
+            {" "}
+            Get All
+          </button>
         </div>
 
         <div className="search col-span-4">
@@ -102,13 +111,18 @@ const Body = () => {
                 required
               />
             </div>
-            <button onClick={() => {
+            <button
+              onClick={() => {
                 console.log(searchText);
-                const filteredList = listOfAllRestaurants.filter((res) => res.info.name.toLowerCase().includes(searchText.toLowerCase()));
+                const filteredList = listOfAllRestaurants.filter((res) =>
+                  res.info.name.toLowerCase().includes(searchText.toLowerCase())
+                );
                 setfilteredRestaurant(filteredList);
-                console.log('list of all restaurantafter filter', listOfAllRestaurants);
-                
-              }} 
+                console.log(
+                  "list of all restaurantafter filter",
+                  listOfAllRestaurants
+                );
+              }}
               className="inline-flex items-center py-2.5 px-3 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               <svg
@@ -132,9 +146,11 @@ const Body = () => {
         </div>
       </div>
       {/* <div className="search">Search</div> */}
-      <div className="grid grid-cols-4 gap-4 mx-2">
+      <div className="flex flex-wrap justify-center mx-2">
         {filteredRestaurant.map((restaurant) => (
-          <RestaurantCard key={restaurant.info.id} resData={restaurant} />
+         <Link to={`/restaurant/${restaurant.info.id}`}>
+            <RestaurantCard  key={restaurant.info.id} resData={restaurant} />
+          </Link>
         ))}
       </div>
     </div>

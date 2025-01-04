@@ -2,6 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Error from "./components/Error";
+import Cart from "./components/Cart";
+import RestaurantDetails from "./components/RestaurantDetails";
 
 const heading = React.createElement(
   "h1",
@@ -57,12 +63,46 @@ const Applayout = () => {
   return (
     <div className="app">
       <Header></Header>
-      <Body></Body>
+      <Outlet />
     </div>
   );
 };
 
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <Applayout />,
+    children: [
+      {
+        path: "/",
+        element: <Body />
+      },
+      {
+        path: "/about",
+        element: <About />
+      },
+      {
+        path: "/contact",
+        element: <Contact />
+      },
+      {
+        path: "/cart",
+        element: <Cart />
+      },
+      {
+        path: "/restaurant/:resId",
+        element: <RestaurantDetails />
+      },
+    ],
+    errorElement: <Error />
+  },
+  
+])
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 // root.render(heading); for core create by react.createElement
 // root.render(jsxHeading);
-root.render(<Applayout />);
+root.render(
+  // routerprovider is a context provider that provides the routing context to all the child components
+  <RouterProvider router = {appRouter} />
+);
