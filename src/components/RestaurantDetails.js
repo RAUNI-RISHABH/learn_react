@@ -1,24 +1,27 @@
-import { useEffect, useState } from "react";
+import useRestaurantMenu from "../utilities/useRestaurantMenu";
 import Shimmer from "./shimmer";
 import { useParams } from "react-router-dom";
 
 const RestaurantDetails = () => {
 
-    const [restInfo, setRestInfo] = useState(null);
+    // const [restInfo, setRestInfo] = useState(null);
 
     const {resId} = useParams();
 
-    useEffect(() => {
-        fetchMenu();
-    }, []);
+    const restInfo = useRestaurantMenu(resId);
 
-    const fetchMenu = async () => {
-        const data = await fetch(`https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.45970&lng=77.02820&restaurantId=${resId}&catalog_qa=undefined&query=North%20Indian&submitAction=ENTER`);
-        const json = await data.json();
-        console.log(json);
+    // we have transferred the below code to useRestaurantMenu.js to make it clean and reusable
+    // useEffect(() => {
+    //     fetchMenu();
+    // }, []);
 
-        setRestInfo(json.data);
-    };
+    // const fetchMenu = async () => {
+    //     const data = await fetch(`https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.45970&lng=77.02820&restaurantId=${resId}&catalog_qa=undefined&query=North%20Indian&submitAction=ENTER`);
+    //     const json = await data.json();
+    //     console.log(json);
+
+    //     setRestInfo(json.data);
+    // };
 
     if(restInfo === null) return <Shimmer />;
 

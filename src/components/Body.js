@@ -3,6 +3,7 @@ import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./shimmer";
 // import resList from "../utilities/mockData";
 import { useState, useEffect } from "react";
+import useOnlineStatus from "../utilities/useOnlineStatus";
 
 const Body = () => {
   // local state variable - super powerful variable
@@ -21,6 +22,9 @@ const Body = () => {
   // if dependency array is given as "listOfAllRestaurants" then it is being called everytime when listOfAllRestaurants is updated.
   useEffect(() => {
     fetchData();
+
+    // this will be called when the component is destroyed
+    return () => {};
   }, []);
 
   console.log("BODY rendered!");
@@ -31,7 +35,7 @@ const Body = () => {
     );
     const json = await data.json();
     let restaurantListFromApi =
-      json["data"]["cards"][4]["card"]["card"]["gridElements"]["infoWithStyle"][
+      json["data"]["cards"][4]["card"]["card"]["gridElements"]?.["infoWithStyle"][
         "restaurants"
       ];
     console.log(json);
@@ -41,6 +45,14 @@ const Body = () => {
     setfilteredRestaurant(restaurantListFromApi);
     copyOfRestaurants = restaurantListFromApi;
   };
+
+  const onlineStatus = useOnlineStatus();
+
+  if(onlineStatus === false) {
+    return (
+      <h1>It seems you are offline, please connect to internet!!!</h1>
+    )
+  }
 
   return listOfAllRestaurants.length === 0 ? (
     <div className="grid grid-cols-4">
