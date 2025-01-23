@@ -1,6 +1,8 @@
 import User from "./User";
 
 import UserClass from "./UserClass";
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 const About = () => {
     return (
@@ -9,6 +11,12 @@ const About = () => {
             <h2>this is namasete react</h2>
             {/* <User name={"Rishabh from functional component"} />
             <UserClass name={"Rishabh from class component"}/> */}
+
+<Stack spacing={2} direction="row">
+      <Button variant="text">Text</Button>
+      <Button variant="contained">Contained</Button>
+      <Button variant="outlined">Outlined</Button>
+    </Stack>
         </div>
     )
 }

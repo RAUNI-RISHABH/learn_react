@@ -62,15 +62,6 @@
     width: 100%;
 }
 
-
-/* swiggy retaurant card style start */
-.card {
-    /* display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px; */
-  }
-  
   .restaurant-card {
     transition: transform 0.3s ease-in-out;
     font-family: "Arial", sans-serif;
@@ -86,6 +77,14 @@
     position: relative;
     display: inline-block;
   }
+
+  .link {
+    color: #FFF;
+  }
+  .link:hover {
+     color: rgba(100, 100, 131, 0.047)
+  }
+
   
   .image-container img {
     width: 250px;

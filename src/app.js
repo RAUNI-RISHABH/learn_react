@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
@@ -8,6 +8,7 @@ import Contact from "./components/Contact";
 import Error from "./components/Error";
 import Cart from "./components/Cart";
 import RestaurantDetails from "./components/RestaurantDetails";
+import UserContext from "./utilities/UserContext";
 // import Grocery from "./components/Grocery";
 
 const Grocery = lazy(() => import("./components/Grocery"));
@@ -61,13 +62,29 @@ const heading = React.createElement(
 // );
 // }
 
-
 const Applayout = () => {
+  console.log("App layout rendered!");
+  
+  const [userName, setUserName] = useState();
+
+  useEffect(() => {
+    // suppose there is an api call and we get the name of the user
+    const data = {
+      name: "Rishabh Prakash",
+    };
+    setUserName(data.name);
+  }, []);
+// if it is wrapped in header component then it will be available to header component
   return (
-    <div className="app">
-      <Header></Header>
-      <Outlet />
-    </div>
+    // if i need to change setUserName from any component then setUserName should be passed in value prop of UserContext.Provider
+    <UserContext.Provider value={{ loggedInuser: userName, setUserName }}>
+      <div className="app h-full">
+      {/* <UserContext.Provider value={{ loggedInuser: 'elon musk' }}> this elon musk will be updated only in header component */}
+        <Header></Header>
+      {/* </UserContext.Provider> */}
+        <Outlet />
+      </div>
+    </UserContext.Provider>
   );
 };
 
@@ -78,38 +95,41 @@ const appRouter = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Body />
+        element: <Body />,
       },
       {
         path: "/about",
-        element: <About />
+        element: <About />,
       },
       {
         path: "/contact",
-        element: <Contact />
+        element: <Contact />,
       },
       {
         path: "/cart",
-        element: <Cart />
+        element: <Cart />,
       },
       {
         path: "/restaurant/:resId",
-        element: <RestaurantDetails />
+        element: <RestaurantDetails />,
       },
       {
         path: "/grocery",
-        element: <Suspense fallback={<h1>Loading</h1>}><Grocery /></Suspense>
+        element: (
+          <Suspense fallback={<h1>Loading</h1>}>
+            <Grocery />
+          </Suspense>
+        ),
       },
     ],
-    errorElement: <Error />
+    errorElement: <Error />,
   },
-  
-])
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 // root.render(heading); for core create by react.createElement
 // root.render(jsxHeading);
 root.render(
   // routerprovider is a context provider that provides the routing context to all the child components
-  <RouterProvider router = {appRouter} />
+  <RouterProvider router={appRouter} />
 );

@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, { withPromotedLabel } from "./RestaurantCard";
 import Shimmer from "./shimmer";
 // import resList from "../utilities/mockData";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import useOnlineStatus from "../utilities/useOnlineStatus";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import UserContext from "../utilities/UserContext";
 
 const Body = () => {
   // local state variable - super powerful variable
@@ -14,6 +17,9 @@ const Body = () => {
   const [filteredRestaurant, setfilteredRestaurant] = useState([]);
   const [searchText, setSearchText] = useState("");
   let copyOfRestaurants = [];
+
+  // calling higher order components withPromotedLabel this will return a new component which has a added label into it
+  const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
 
   /* useEffect() */
   // as soon as the body(component) renders it will eventually call the useEffect hook it has two arguments first is arrow function second is dependecy array(its not mandatory)
@@ -35,10 +41,16 @@ const Body = () => {
     );
     const json = await data.json();
     let restaurantListFromApi =
-      json["data"]["cards"][4]["card"]["card"]["gridElements"]?.["infoWithStyle"][
-        "restaurants"
-      ];
+      json["data"]["cards"][4]["card"]["card"]["gridElements"]?.[
+        "infoWithStyle"
+      ]["restaurants"];
     console.log(json);
+    restaurantListFromApi = restaurantListFromApi.map((restaurant, index) => {
+      if (index % 2 === 1) {
+        return { ...restaurant, info: { ...restaurant.info, promoted: true } };
+      }
+      return { ...restaurant, info: { ...restaurant.info, promoted: false } };
+    });
     console.log(restaurantListFromApi);
 
     setListOfRestaurant(restaurantListFromApi);
@@ -48,11 +60,11 @@ const Body = () => {
 
   const onlineStatus = useOnlineStatus();
 
-  if(onlineStatus === false) {
-    return (
-      <h1>It seems you are offline, please connect to internet!!!</h1>
-    )
+  if (onlineStatus === false) {
+    return <h1>It seems you are offline, please connect to internet!!!</h1>;
   }
+
+  const {loggedInuser, setUserName} = useContext(UserContext);
 
   return listOfAllRestaurants.length === 0 ? (
     <div className="grid grid-cols-4">
@@ -61,10 +73,32 @@ const Body = () => {
       ))}
     </div>
   ) : (
-    <div className="body">
+    <div className="body pink">
       <div className="grid grid-cols-3 py-5">
-        <div>
-          <button
+        <div className="p-2">
+          <Stack direction="row" spacing={1}>
+            <Chip
+              label="Top Rated Restaurants"
+              color="primary"
+              onClick={() => {
+                const filteredList = listOfAllRestaurants.filter(
+                  (res) => res?.info?.avgRating >= 4
+                );
+                console.log(filteredList.length);
+
+                setListOfRestaurant(filteredList);
+              }}
+            />
+            <Chip
+              label="Get All"
+              color="primary"
+              onClick={() => {
+                setListOfRestaurant(copyOfRestaurants);
+              }}
+            />
+          </Stack>
+
+          {/* <button
             className="filter-btn"
             onClick={() => {
               const filteredList = listOfAllRestaurants.filter(
@@ -85,7 +119,7 @@ const Body = () => {
           >
             {" "}
             Get All
-          </button>
+          </button> */}
         </div>
 
         <div className="search col-span-4">
@@ -154,14 +188,28 @@ const Body = () => {
               </svg>
               Search
             </button>
+
+            <div>
+              <label>User Name:</label>
+              <input className="border border-black p-2" value={loggedInuser} type="text" onChange={(e) => setUserName(e.target.value)} />
+            </div>
           </div>
         </div>
       </div>
       {/* <div className="search">Search</div> */}
       <div className="flex flex-wrap justify-center mx-2">
         {filteredRestaurant.map((restaurant) => (
-         <Link to={`/restaurant/${restaurant.info.id}`}>
-            <RestaurantCard  key={restaurant.info.id} resData={restaurant} />
+          <Link
+            key={restaurant.info.id}
+            to={`/restaurant/${restaurant.info.id}`}
+          >
+            {/* if restaurant has promoted data as true then load new RestaurantCardPromoted component */}
+
+            {restaurant.info.promoted ? (
+              <RestaurantCardPromoted resData={restaurant} />
+            ) : (
+              <RestaurantCard resData={restaurant} />
+            )}
           </Link>
         ))}
       </div>
