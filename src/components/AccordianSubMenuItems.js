@@ -15,7 +15,7 @@ return (
                     {itemDetails?.defaultPrice / 100 || "SomeThing went wrong"}
                 </div>
                 <div className="">
-                    {itemDetails.ratings.aggregatedRating?.rating ? (
+                    {itemDetails?.ratings?.aggregatedRating?.rating ? (
                         <span className="text-green-900">
                             {" "}
                             <StarIcon fontSize="small" />{" "}

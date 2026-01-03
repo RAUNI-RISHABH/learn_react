@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { restaurantMenuBaseURL } from "./constant";
 
 const useRestaurantMenu = (resId) => {
 
@@ -11,9 +12,9 @@ const useRestaurantMenu = (resId) => {
     }, []);
 
     const fetchMenuData = async () => {
-        const data = await fetch(`https://thingproxy.freeboard.io/fetch/https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.45970&lng=77.02820&restaurantId=${resId}&catalog_qa=undefined&query=North%20Indian&submitAction=ENTER`);
+        const data = await fetch(`${restaurantMenuBaseURL}/listRestaurantMenu/${resId}`);
         const json = await data.json();
-        console.log(json);
+        console.log("menu details",json);
 
         setRestInfo(json.data);
     };

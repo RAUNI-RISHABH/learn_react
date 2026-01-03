@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { LOGO_URL } from "../utilities/constant";
+import logo from "../assets/img/logo.png";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utilities/useOnlineStatus";
 import { Button } from "@mui/material";
@@ -29,7 +30,7 @@ export const Header = () => {
      
         <div>
         <Link to="/">
-          <img className="w-40 h-20" src={LOGO_URL} alt="Logo" />
+          <img className="w-40 h-20" src={logo} alt="Logo" />
         </Link>
 
         </div>

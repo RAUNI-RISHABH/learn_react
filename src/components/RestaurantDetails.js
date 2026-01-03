@@ -39,7 +39,7 @@ const [showIndex, setShowindex] = useState(0);
   console.log("total recomended category cards", recomendedCards);
 
   recomendedCards = recomendedCards.filter((item) =>
-    item.card.card?.["@type"].includes("ItemCategory") && item.card.card?.itemCards
+    item?.card?.card?.["@type"].includes("ItemCategory") && item?.card?.card?.itemCards
   );
 
   console.log("recomendedCards after filter", recomendedCards);
