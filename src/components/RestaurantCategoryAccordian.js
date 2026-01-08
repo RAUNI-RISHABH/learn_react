@@ -7,7 +7,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import AccordianSubMenuItems from "./AccordianSubMenuItems";
 
 const RestaurantCategoryAccordian = ({ categoryDetails, showItems, setShowIndex }) => {
-//   console.log("categoryDetails ", categoryDetails);
+  console.log("categoryDetails ", categoryDetails);
 
   const handleAccordionClick = () => {
     console.log("Accordion clicked");

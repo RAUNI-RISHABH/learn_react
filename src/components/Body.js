@@ -7,7 +7,8 @@ import useOnlineStatus from "../utilities/useOnlineStatus";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import UserContext from "../utilities/UserContext";
-import {restaurantMenuBaseURL} from "../utilities/constant";
+import {restaurantMenuBaseURL, restaurants} from "../utilities/constant";
+import axios from "axios";
 
 const Body = () => {
   // local state variable - super powerful variable
@@ -28,19 +29,34 @@ const Body = () => {
   // if dependency array is empty is provided then useEffect is called on initial render(just once);
   // if dependency array is given as "listOfAllRestaurants" then it is being called everytime when listOfAllRestaurants is updated.
   useEffect(() => {
-    fetchData();
+    const fetchDataAsync = async () => {
+      try {
+      await fetchData();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchDataAsync();
 
     // this will be called when the component is destroyed
-    return () => {};
+    return () => { console.log("Body component unmounted"); };
   }, []);
 
   console.log("BODY rendered!");
 
   const fetchData = async () => {
-    const data = await fetch(
-      `${restaurantMenuBaseURL}/listRestaurants`
-    );
-    const json = await data.json();
+
+    console.log("fetching data from url",  `${restaurantMenuBaseURL}/listRestaurants`);
+
+    const json = restaurants;
+ 
+
+    // const data = await fetch(
+    //   `${restaurantMenuBaseURL}/listRestaurants`
+    // );
+    // const json = data.json();
+
+    console.log("fetched data from api", json);
     let restaurantListFromApi =
       json["data"]["data"]["cards"][1]["card"]["card"]["gridElements"]?.[
         "infoWithStyle"

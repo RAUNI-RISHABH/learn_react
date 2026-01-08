@@ -4,13 +4,18 @@ import RestaurantCategoryAccordian from "./RestaurantCategoryAccordian";
 import Shimmer from "./shimmer";
 import { useParams } from "react-router-dom";
 
+import {accordianData} from "../utilities/constant";
+
+
 const RestaurantDetails = () => {
   // const [restInfo, setRestInfo] = useState(null);
 
   const { resId } = useParams();
 
-//   custome hooks
+//   custom hooks to fetch restaurant details
   const restInfo = useRestaurantMenu(resId);
+
+  console.log("Restaurant details info", restInfo);
 
 const [showIndex, setShowindex] = useState(0);
 
@@ -30,11 +35,10 @@ const [showIndex, setShowindex] = useState(0);
   if (restInfo === null) return <Shimmer />;
 
   const { name, cuisines, costForTwoMessage } =
-    restInfo?.cards[2]?.card?.card?.info;
-  console.log("restInfo cards", restInfo?.cards);
+    restInfo;
+ 
 
-  let { cards: recomendedCards } =
-    restInfo?.cards[4].groupedCard?.cardGroupMap?.REGULAR;
+  let { cards: recomendedCards } = accordianData;
 
   console.log("total recomended category cards", recomendedCards);
 

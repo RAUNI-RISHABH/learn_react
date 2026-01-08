@@ -12,7 +12,7 @@ return (
                 <div className="">{itemDetails?.name}</div>
                 <div className="mb-3">
                     <CurrencyRupeeIcon fontSize="small" />{" "}
-                    {itemDetails?.defaultPrice / 100 || "SomeThing went wrong"}
+                    {itemDetails?.price / 100 || "SomeThing went wrong"}
                 </div>
                 <div className="">
                     {itemDetails?.ratings?.aggregatedRating?.rating ? (
@@ -26,7 +26,7 @@ return (
                         ""
                     )}
                 </div>
-                <div className="h-5 leading-5 text-sm line-clamp-2">
+                <div className="leading-5 text-sm line-clamp-2 ">
                     {itemDetails?.description}
                 </div>
             </div>
