@@ -11,7 +11,7 @@ const RestaurantCategoryAccordian = ({ categoryDetails, showItems, setShowIndex 
 
   const handleAccordionClick = () => {
     console.log("Accordion clicked");
-    // this is a function which will update state of restaurantdetails statevariable which was passed as a props
+    // this is a function which will update state of restaurantdetails state variable which was passed as a props
     setShowIndex();
   };
 

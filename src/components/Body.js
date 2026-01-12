@@ -205,13 +205,16 @@ const Body = () => {
               </svg>
               Search
             </button>
+          </div>
+        </div>
+      </div>
 
-            <div>
+      <div className="gid grid-cols-3 items-center">
+        
+            <div className="">
               <label>User Name:</label>
               <input className="border border-black p-2" value={loggedInuser} type="text" onChange={(e) => setUserName(e.target.value)} />
             </div>
-          </div>
-        </div>
       </div>
       {/* <div className="search">Search</div> */}
       <div className="flex flex-wrap justify-center mx-2">

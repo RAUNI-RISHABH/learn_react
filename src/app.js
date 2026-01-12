@@ -11,6 +11,9 @@ import RestaurantDetails from "./components/RestaurantDetails";
 import UserContext from "./utilities/UserContext";
 // import Grocery from "./components/Grocery";
 
+import { Provider } from "react-redux";
+import appStore from "./utilities/appStore";
+
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const heading = React.createElement(
@@ -76,7 +79,8 @@ const Applayout = () => {
   }, []);
 // if it is wrapped in header component then it will be available to header component
   return (
-    // if i need to change setUserName from any component then setUserName should be passed in value prop of UserContext.Provider
+    <Provider store={appStore}>
+     {/* if i need to change setUserName from any component then setUserName should be passed in value prop of UserContext.Provider */}
     <UserContext.Provider value={{ loggedInuser: userName, setUserName }}>
       <div className="app h-full">
       {/* <UserContext.Provider value={{ loggedInuser: 'elon musk' }}> this elon musk will be updated only in header component */}
@@ -85,6 +89,7 @@ const Applayout = () => {
         <Outlet />
       </div>
     </UserContext.Provider>
+    </Provider>
   );
 };
 
